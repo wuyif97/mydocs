@@ -1,0 +1,7 @@
+model_list:
+  - model_name: free-model
+    litellm_params:
+      model: openrouter/meta-llama/llama-3-8b-instruct:free
+
+litellm_settings:
+  drop_params: true

@@ -1,0 +1,7 @@
+model_list:
+  - model_name: qwen-free
+    litellm_params:
+      model: huggingface/Qwen/Qwen2.5-Coder-32B-Instruct
+
+litellm_settings:
+  drop_params: true

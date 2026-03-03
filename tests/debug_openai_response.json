@@ -1,0 +1,57 @@
+{
+  "id": "gen-1772556412-WC0YkReAJFDVZtjSU5W4",
+  "created": 1772556412,
+  "model": "free-model",
+  "object": "chat.completion",
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "reasoning_content": "好的，用户让我用中文回答，只用一句话介绍我自己。首先得确认他的需求：可能是在测试我的功能，或者需要快速了解我能做什么。然后得注意限制条件，必须用中文，而且只有一句话。不能多也不能少。\n\n接着想，用户身份可能是普通用户，也可能是在测试AI的回复能力。深层需求可能想知道我的核心功能，比如是否擅长多语言，或者是否有特定专长。要突出“多个领域”和“多语言”这两个",
+        "provider_specific_fields": {
+          "reasoning_details": [
+            {
+              "type": "reasoning.text",
+              "text": "好的，用户让我用中文回答，只用一句话介绍我自己。首先得确认他的需求：可能是在测试我的功能，或者需要快速了解我能做什么。然后得注意限制条件，必须用中文，而且只有一句话。不能多也不能少。\n\n接着想，用户身份可能是普通用户，也可能是在测试AI的回复能力。深层需求可能想知道我的核心功能，比如是否擅长多语言，或者是否有特定专长。要突出“多个领域”和“多语言”这两个",
+              "format": "unknown",
+              "index": 0
+            }
+          ],
+          "refusal": null,
+          "reasoning": "好的，用户让我用中文回答，只用一句话介绍我自己。首先得确认他的需求：可能是在测试我的功能，或者需要快速了解我能做什么。然后得注意限制条件，必须用中文，而且只有一句话。不能多也不能少。\n\n接着想，用户身份可能是普通用户，也可能是在测试AI的回复能力。深层需求可能想知道我的核心功能，比如是否擅长多语言，或者是否有特定专长。要突出“多个领域”和“多语言”这两个",
+          "reasoning_content": "好的，用户让我用中文回答，只用一句话介绍我自己。首先得确认他的需求：可能是在测试我的功能，或者需要快速了解我能做什么。然后得注意限制条件，必须用中文，而且只有一句话。不能多也不能少。\n\n接着想，用户身份可能是普通用户，也可能是在测试AI的回复能力。深层需求可能想知道我的核心功能，比如是否擅长多语言，或者是否有特定专长。要突出“多个领域”和“多语言”这两个"
+        },
+        "content": null
+      },
+      "provider_specific_fields": {
+        "native_finish_reason": "length"
+      }
+    }
+  ],
+  "usage": {
+    "completion_tokens": 100,
+    "prompt_tokens": 23,
+    "total_tokens": 123,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 177,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    }
+  },
+  "provider": "StepFun"
+}

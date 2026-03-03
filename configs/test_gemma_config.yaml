@@ -1,0 +1,8 @@
+model_list:
+  - model_name: gemma-free
+    litellm_params:
+      model: openrouter/google/gemma-2-9b-it:free
+      api_key: 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
+
+litellm_settings:
+  drop_params: true

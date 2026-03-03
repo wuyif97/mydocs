@@ -1,0 +1,105 @@
+# LiteLLM 独立使用配置示例
+
+model_list:
+  # ==================== 主模型配置 ====================
+  
+  - model_name: qwen-72b              # 在客户端使用的模型名称
+    litellm_params:
+      model: openai/qwen-72b          # 实际模型标识（openai/前缀表示 OpenAI 格式）
+      api_base: http://192.168.1.100:8000/v1  # ⚠️ 修改为你的内网地址
+      api_key: sk-local-key           # ⚠️ 修改为你的 API Key
+      
+  # ==================== 备选模型（可选）====================
+  
+  - model_name: llama-3-70b
+    litellm_params:
+      model: openai/llama-3-70b
+      api_base: http://192.168.1.101:8000/v1
+      api_key: sk-another-key
+      
+  # Ollama 本地模型作为降级选项
+  - model_name: ollama-backup
+    litellm_params:
+      model: ollama/qwen2.5-coder:latest
+      api_base: http://localhost:11434
+      api_key: ollama
+
+# ==================== 通用设置 ====================
+
+general_settings:
+  # 主密钥（可选，设置后所有请求需要提供此密钥）
+  master_key: sk-master-key
+  
+  # 数据库 URL（可选，用于使用率和成本跟踪）
+  # database_url: "postgresql://user:password@localhost:5432/litellm"
+  
+  # 环境变量
+  environment_variables:
+    LITELLM_MASTER_KEY: "sk-master-key"
+
+# ==================== LiteLLM 高级设置 ====================
+
+litellm_settings:
+  # 自动丢弃不支持的参数
+  drop_params: true
+  
+  # 启用详细日志（调试用）
+  set_verbose: false
+  
+  # 重试次数
+  num_retries: 3
+  
+  # 请求超时（秒）
+  request_timeout: 600
+  
+  # 缓存设置（可选）
+  # caching: true
+  # caching_with_models: ["qwen-72b"]
+  
+  # 监控回调（可选）
+  # callbacks: [langfuse, lunary, prometheus]
+  
+  # 降级链配置
+  # fallbacks:
+  #   - models: ["qwen-72b"]
+  #     fallback_models: ["llama-3-70b", "ollama-backup"]
+
+# ==================== 使用说明 ====================
+#
+# 启动命令:
+#   litellm --config config.yaml --port 4000
+#
+# 测试连接:
+#   curl http://localhost:4000/v1/chat/completions \
+#     -H "Content-Type: application/json" \
+#     -H "Authorization: Bearer sk-master-key" \
+#     -d '{"model": "qwen-72b","messages": [{"role": "user", "content": "你好"}]}'
+#
+# Python 调用示例:
+#   from openai import OpenAI
+#   client = OpenAI(
+#       api_key="sk-master-key",
+#       base_url="http://localhost:4000"
+#   )
+#   response = client.chat.completions.create(
+#       model="qwen-72b",
+#       messages=[{"role": "user", "content": "你好"}]
+#   )
+#   print(response.choices[0].message.content)
+#
+# VSCode Continue 插件配置:
+#   {
+#     "models": [{
+#       "title": "Qwen-72B",
+#       "provider": "openai",
+#       "model": "qwen-72b",
+#       "apiBase": "http://localhost:4000"
+#     }]
+#   }
+#
+# Cursor IDE 配置:
+#   Settings → AI → Add Model
+#   Provider: OpenAI Compatible
+#   Base URL: http://localhost:4000
+#   API Key: sk-master-key
+#   Model: qwen-72b

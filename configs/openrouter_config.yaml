@@ -1,0 +1,9 @@
+model_list:
+  - model_name: free-model
+    litellm_params:
+      model: openrouter/stepfun/step-3.5-flash:free
+      api_key: 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
+
+litellm_settings:
+  drop_params: true
+  set_verbose: true

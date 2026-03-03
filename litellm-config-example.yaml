@@ -1,0 +1,69 @@
+# LiteLLM 配置文件示例
+# 用于连接内网 OpenAI 格式大模型
+
+model_list:
+  # ==================== 内网模型配置 ====================
+  
+  - model_name: qwen-72b              # 在 CCR 中使用的模型名称
+    litellm_params:
+      model: openai/qwen-72b          # 实际模型名（前缀 openai/ 表示使用 OpenAI 格式）
+      api_base: http://192.168.1.100:8000/v1  # ⚠️ 修改为你的内网地址
+      api_key: sk-local-key           # ⚠️ 修改为你的 API Key（如无认证可随意填写）
+      timeout: 300                    # 超时时间（秒）
+      
+  # 可以添加更多内网模型
+  
+  - model_name: llama-3-70b
+    litellm_params:
+      model: openai/llama-3-70b
+      api_base: http://192.168.1.101:8000/v1
+      api_key: sk-another-key
+      timeout: 300
+
+# ==================== 通用设置 ====================
+
+general_settings:
+  master_key: sk-master-key           # 主密钥（可选，设置后客户端需要提供此密钥）
+  database_url: null                  # 数据库 URL（可选，用于跟踪使用情况）
+  
+litellm_settings:
+  drop_params: true                   # 自动丢弃不支持的参数
+  set_verbose: true                   # 启用详细日志
+  num_retries: 3                      # 重试次数
+  request_timeout: 600                # 请求超时（秒）
+  
+  # 可选：添加监控回调
+  # callbacks: [langfuse, lunary]
+  
+  # 可选：降级链配置
+  # fallbacks: 
+  #   - models: ["qwen-72b"]
+  #     fallback_models: ["llama-3-70b"]
+
+# ==================== 使用说明 ====================
+#
+# 启动命令:
+#   litellm --config config.yaml
+#
+# 或指定端口:
+#   litellm --config config.yaml --port 4000
+#
+# 测试连接:
+#   curl http://localhost:4000/v1/chat/completions \
+#     -H "Content-Type: application/json" \
+#     -H "Authorization: Bearer sk-master-key" \
+#     -d '{"model": "qwen-72b","messages": [{"role": "user", "content": "Hello"}]}'
+#
+# 配合 CCR 使用:
+#   在 ~/.claude-code-router/config.json 中配置:
+#   {
+#     "Providers": [{
+#       "name": "litellm",
+#       "api_base_url": "http://localhost:4000/v1/chat/completions",
+#       "api_key": "sk-master-key",
+#       "models": ["qwen-72b"]
+#     }],
+#     "Router": {
+#       "default": "litellm,qwen-72b"
+#     }
+#   }

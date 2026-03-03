@@ -1,0 +1,60 @@
+{
+  // ==================== 全局配置 ====================
+  
+  "APIKEY": "",
+  "HOST": "127.0.0.1",
+  "PORT": 3456,
+  "PROXY_URL": "",
+  "API_TIMEOUT_MS": 600000,
+  "LOG": true,
+  "LOG_LEVEL": "debug",
+  "NON_INTERACTIVE_MODE": false,
+  
+  // ==================== 提供商配置 ====================
+  
+  "Providers": [
+    {
+      // === 内网 OpenAI 格式大模型配置 ===
+      "name": "local-ai",
+      // 替换为你的内网模型 API 地址
+      "api_base_url": "http://192.168.1.100:8000/v1/chat/completions",
+      // 如果不需要认证，可以留空或填任意值
+      "api_key": "your-api-key",
+      // 你的模型名称
+      "models": ["qwen-72b", "llama-3-70b"],
+      
+      // 如果需要 Transformers 适配（可选）
+      "transformer": {
+        "use": []
+        // 如果模型完全兼容 OpenAI 格式，通常不需要 transformer
+      }
+    },
+    
+    {
+      // Ollama 本地部署（备选方案）
+      "name": "ollama",
+      "api_base_url": "http://localhost:11434/v1/chat/completions",
+      "api_key": "ollama",
+      "models": ["qwen2.5-coder:latest", "codellama:latest"]
+    }
+  ],
+  
+  // ==================== 路由配置 ====================
+  
+  "Router": {
+    // 默认使用内网模型
+    "default": "local-ai,qwen-72b",
+    
+    // 后台任务也使用内网模型
+    "background": "local-ai,qwen-72b",
+    
+    // 深度思考（如果内网模型支持）
+    "think": "local-ai,qwen-72b",
+    
+    // 降级链：如果内网模型失败，使用 Ollama
+    "fallback": [
+      "local-ai,qwen-72b",
+      "ollama,qwen2.5-coder:latest"
+    ]
+  }
+}
