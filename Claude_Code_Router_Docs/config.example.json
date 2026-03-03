@@ -1,0 +1,157 @@
+{
+  // ==================== 全局配置 ====================
+  
+  // API 访问密钥（可选，设置后客户端需要提供此密钥进行认证）
+  "APIKEY": "",
+  
+  // 服务器绑定地址（如果未设置 APIKEY，则强制为 127.0.0.1）
+  "HOST": "127.0.0.1",
+  
+  // 服务器监听端口
+  "PORT": 3456,
+  
+  // HTTP 代理（可选）
+  "PROXY_URL": "",
+  
+  // API 调用超时时间（毫秒），默认 10 分钟
+  "API_TIMEOUT_MS": 600000,
+  
+  // 是否启用日志
+  "LOG": true,
+  
+  // 日志级别：fatal, error, warn, info, debug, trace
+  "LOG_LEVEL": "debug",
+  
+  // 非交互式模式（适用于 CI/CD、Docker 等环境）
+  "NON_INTERACTIVE_MODE": false,
+  
+  // 自定义路由脚本路径（可选）
+  // "CUSTOM_ROUTER_PATH": "/path/to/custom-router.js",
+  
+  // ==================== 提供商配置 ====================
+  
+  "Providers": [
+    {
+      // DeepSeek 配置
+      "name": "deepseek",
+      "api_base_url": "https://api.deepseek.com/chat/completions",
+      "api_key": "$DEEPSEEK_API_KEY",  // 使用环境变量
+      "models": ["deepseek-chat", "deepseek-reasoner"],
+      "transformer": {
+        "use": ["deepseek"],
+        "deepseek-chat": {
+          "use": ["tooluse"]
+        }
+      }
+    },
+    
+    {
+      // OpenRouter 配置
+      "name": "openrouter",
+      "api_base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "api_key": "$OPENROUTER_API_KEY",
+      "models": [
+        "google/gemini-2.5-pro-preview",
+        "anthropic/claude-sonnet-4",
+        "anthropic/claude-3.5-sonnet"
+      ],
+      "transformer": {
+        "use": ["openrouter"]
+      }
+    },
+    
+    {
+      // Google Gemini 配置
+      "name": "gemini",
+      "api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
+      "api_key": "$GEMINI_API_KEY",
+      "models": ["gemini-2.5-flash", "gemini-2.5-pro"],
+      "transformer": {
+        "use": ["gemini"]
+      }
+    },
+    
+    {
+      // Ollama 本地部署配置
+      "name": "ollama",
+      "api_base_url": "http://localhost:11434/v1/chat/completions",
+      "api_key": "ollama",
+      "models": ["qwen2.5-coder:latest", "codellama:latest"]
+    },
+    
+    {
+      // 火山引擎配置
+      "name": "volcengine",
+      "api_base_url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+      "api_key": "$VOLCENGINE_API_KEY",
+      "models": ["deepseek-v3-250324", "deepseek-r1-250528"],
+      "transformer": {
+        "use": ["deepseek"]
+      }
+    },
+    
+    {
+      // SiliconFlow 硅基流动配置
+      "name": "siliconflow",
+      "api_base_url": "https://api.siliconflow.cn/v1/chat/completions",
+      "api_key": "$SILICONFLOW_API_KEY",
+      "models": [
+        "Qwen/Qwen2.5-Coder-32B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ]
+    },
+    
+    {
+      // Groq 配置
+      "name": "groq",
+      "api_base_url": "https://api.groq.com/openai/v1/chat/completions",
+      "api_key": "$GROQ_API_KEY",
+      "models": ["llama-3.3-70b-versatile", "mixtral-8x7b-32768"]
+    },
+    
+    {
+      // 阿里云通义千问配置
+      "name": "dashscope",
+      "api_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "api_key": "$DASHSCOPE_API_KEY",
+      "models": ["qwen3-coder-plus", "qwen-max"],
+      "transformer": {
+        "use": [
+          ["maxtoken", {"max_tokens": 65536}],
+          "enhancetool"
+        ]
+      }
+    }
+  ],
+  
+  // ==================== 路由配置 ====================
+  
+  "Router": {
+    // 默认模型：用于所有未特别指定的请求
+    "default": "deepseek,deepseek-chat",
+    
+    // 后台任务：轻量级、非关键任务
+    "background": "ollama,qwen2.5-coder:latest",
+    
+    // 深度思考：需要复杂推理的任务
+    "think": "deepseek,deepseek-reasoner",
+    
+    // 长上下文：超过阈值的请求（使用更大上下文窗口模型）
+    "longContext": "openrouter,google/gemini-2.5-pro-preview",
+    
+    // 长上下文阈值：超过此令牌数使用 longContext 路由
+    "longContextThreshold": 60000,
+    
+    // 网络搜索：涉及网络搜索的请求
+    "webSearch": "gemini,gemini-2.5-flash",
+    
+    // 图像处理：包含图像的请求
+    "image": "openrouter,google/gemini-2.5-pro-preview",
+    
+    // 降级链：如果主要模型失败，按顺序尝试这些模型
+    "fallback": [
+      "deepseek,deepseek-chat",
+      "ollama,qwen2.5-coder:latest"
+    ]
+  }
+}
